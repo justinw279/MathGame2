@@ -155,10 +155,14 @@ public class MathGame {
                 winner = player2;
             }
         }
+        winningStreak();
+        if (winner == pastWinner) {
+            System.out.println(winner + " has won " + winningStreak + " games in a row!");
+        }
     }
 
     private void winningStreak() {
-        while (winner == pastWinner) {
+        if (winner == pastWinner) {
             winningStreak++;
         }
         if (winner == pastWinner) {
