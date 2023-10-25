@@ -30,6 +30,24 @@ public class MathGame {
         return winner;
     }
 
+    /*
+            if (winner == pastWinner) {
+            System.out.println(winner + " has won " + winningStreak + " games in a row!");
+        }
+     */
+
+    public Player getPastWinner() {
+        return pastWinner;
+    }
+
+    public Player winner() {
+        return winner;
+    }
+
+    public int getWinningStreak() {
+        return winningStreak;
+    }
+
     // plays a round of the math game
     public void playRound() {
         chooseStartingPlayer();  // this helper method (shown below) sets currentPlayer to either player1 or player2
@@ -131,9 +149,7 @@ public class MathGame {
 
     // sets the winner when the game ends based on the player that missed the question
     private void determineWinner() {
-        if (pastWinner == null) {
-            pastWinner = getWinner();
-        } else {
+        if (pastWinner != null) {
             pastWinner = winner;
         }
         if (currentPlayer == player1) {
@@ -155,6 +171,9 @@ public class MathGame {
                 winner = player2;
             }
         }
+        if (pastWinner == null) {
+            pastWinner = winner;
+        }
         winningStreak();
         if (winner == pastWinner) {
             System.out.println(winner + " has won " + winningStreak + " games in a row!");
@@ -165,7 +184,7 @@ public class MathGame {
         if (winner == pastWinner) {
             winningStreak++;
         }
-        if (winner == pastWinner) {
+        if (winner != pastWinner) {
             winningStreak = 0;
         }
     }
