@@ -43,11 +43,10 @@ public class MathGameUI {
                 System.out.println("The winner was " + game.getWinner().getName());   // print winner's name
                 System.out.println("with a score of " + game.getWinner().getScore()); // print winner's score
             }
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println(game.getWinner() == game.getPastWinner());
             if (game.getWinner() == game.getPastWinner()) {
-                System.out.println(game.getWinner() + " has won " + game.getWinningStreak() + " games in a row!");
+                System.out.println(game.getWinnerName() + " has won " + game.getWinningStreak() + " games in a row!");
             }
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             System.out.print("Want to play another round? y/n: ");
             playAgain = scan.nextLine().toLowerCase(); // take input and covert to lowercase
 

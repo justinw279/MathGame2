@@ -7,7 +7,7 @@ public class MathGame {
     private Player player3;
     private int winningStreak;
     private Player currentPlayer;
-    private Player pastWinner;
+    private Player pastWinner = null;
     private Player winner;
     private boolean gameOver;
     private Scanner scanner;
@@ -26,8 +26,14 @@ public class MathGame {
     // ------------ PUBLIC METHODS (to be used by client classes) ------------
 
     // returns winning Player; will be null if neither Player has won yet
-    public Player getWinner() {
-        return winner;
+    public String getWinnerName() {
+        if (winner == player1) {
+            return player1.getName();
+        } else if (winner == player2) {
+            return player2.getName();
+        } else {
+            return player3.getName();
+        }
     }
 
     /*
@@ -40,7 +46,7 @@ public class MathGame {
         return pastWinner;
     }
 
-    public Player winner() {
+    public Player getWinner() {
         return winner;
     }
 
@@ -49,6 +55,7 @@ public class MathGame {
     }
 
     // plays a round of the math game
+    int consecutiveIncorrects = 0;
     public void playRound() {
         chooseStartingPlayer();  // this helper method (shown below) sets currentPlayer to either player1 or player2
         while (!gameOver) {
@@ -60,9 +67,17 @@ public class MathGame {
                 currentPlayer.incrementScore();  // this increments the currentPlayer's score
                 swapPlayers();  // this helper method (shown below) sets currentPlayer to the other Player
             } else {
-                System.out.println("INCORRECT!");
-                gameOver = true;
-                determineWinner();
+                // System.out.println("INCORRECT!");
+                // gameOver = true;
+                // determineWinner();
+                System.out.println("Incorrect! Next player gets one more chance.");
+                swapPlayers();
+                correct = askQuestion();
+                if (!correct) {
+                    System.out.println("INCORRECT!");
+                    gameOver = true;
+                    determineWinner();
+                }
             }
         }
     }
@@ -103,7 +118,7 @@ public class MathGame {
 
     // asks a math question and returns true if the player answered correctly, false if not
     private boolean askQuestion() {
-        int operation = (int) (Math.random() * 4) + 1;
+        int operation = (int) (Math.random() * 5) + 1;
         int num1 = (int) (Math.random() * 100) + 1;
         int num2;
         int correctAnswer;
@@ -120,10 +135,15 @@ public class MathGame {
             num2 = (int) (Math.random() * 10) + 1;
             System.out.print(num1 + " * " + num2 + " = ");
             correctAnswer = num1 * num2;
-        } else {  // option == 4
+        } else if (operation == 4) {  // option == 4
             num2 = (int) (Math.random() * 10) + 1;
             System.out.print(num1 + " / " + num2 + " = ");
             correctAnswer = num1 / num2;
+        } else {
+            num1 = (int) (Math.random() * 10) + 1;
+            num2 = (int) (Math.random() * 10) + 3;
+            correctAnswer = (int) (Math.log(num1) / Math.log(num2));
+            System.out.print("log base " + num2 + " to " + num1 + " equals: ");
         }
 
         int playerAnswer = scanner.nextInt(); // get player's answer using Scanner
@@ -149,9 +169,7 @@ public class MathGame {
 
     // sets the winner when the game ends based on the player that missed the question
     private void determineWinner() {
-        if (pastWinner != null) {
-            pastWinner = winner;
-        }
+        pastWinner = winner;
         if (currentPlayer == player1) {
             if (player2.getScore() > player3.getScore()) {
                 winner = player2;
